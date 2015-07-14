@@ -103,7 +103,7 @@ function toggleHeading(windowWidth){
         else{
             $('nav').hide();
         }
-        if($('#article-page').length){
+        if($('#article-page').length && windowWidth > fullScreen){
             $('body').addClass('article-scroll');
         }
     }
