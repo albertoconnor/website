@@ -39,7 +39,10 @@ class Colour(models.Model):
     def save(self, *args, **kwargs):
         if not self.hex_value.startswith("#"):
             self.hex_value = "#{}".format(self.hex_value)
+        super(Colour, self).save(*args, **kwargs)
 
+    class Meta:
+        ordering = ['name', ]
 
 register_snippet(Colour)
 
@@ -142,6 +145,7 @@ class ArticleCategory(UniquelySlugable):
 
     class Meta:
         verbose_name_plural = "Article Categories"
+        ordering = ['name', ]
 
     def natural_key(self):
         return (self.slug, )
