@@ -47,7 +47,7 @@ class NewsletterArticleLink(Orderable, models.Model):
         on_delete=models.SET_NULL,
         related_name='newsletter_links'
     )
-    article_text = RichTextField(
+    override_text = RichTextField(
         blank=True,
         default="",
         help_text="Text to describe article."
