@@ -73,7 +73,7 @@ class NewsletterArticleLink(Orderable, models.Model):
 
     panels = [
         PageChooserPanel("article", 'articles.ArticlePage'),
-        FieldPanel("article_text"),
+        FieldPanel("override_text"),
         ImageChooserPanel("override_image"),
 
     ]
@@ -117,7 +117,6 @@ class NewsletterExternalArticleLink(Orderable, ExternalArticle):
 @python_2_unicode_compatible
 class Source(models.Model):
     name = models.CharField(max_length=100)
-    website = models.URLField(max_length=255)
     logo = models.ForeignKey(
         'images.AttributedImage',
         null=True,
@@ -135,7 +134,6 @@ register_snippet(Source)
 
 Source.panels = [
     FieldPanel('name'),
-    FieldPanel('website'),
     ImageChooserPanel('logo'),
 ]
 
@@ -168,6 +166,7 @@ class Event(models.Model):
     date = models.DateTimeField("Event Date")
     location = models.CharField(max_length=255)
     event_link = models.URLField(max_length=255)
+    event_text = RichTextField()
     organization = models.ForeignKey(
         'newsletter.Organization',
         null=True,
@@ -185,7 +184,8 @@ class Event(models.Model):
         FieldPanel("title"),
         FieldPanel("date"),
         FieldPanel("location"),
-        FieldPanel("event_link")
+        FieldPanel("event_link"),
+        FieldPanel("event_text")
     ]
 
 
@@ -202,7 +202,6 @@ class NewsletterEventLink(Orderable, Event):
 @python_2_unicode_compatible
 class Organization(models.Model):
     name = models.CharField(max_length=100)
-    website = models.URLField(max_length=255)
     logo = models.ForeignKey(
         'images.AttributedImage',
         null=True,
@@ -220,7 +219,6 @@ register_snippet(Organization)
 
 Organization.panels = [
     FieldPanel('name'),
-    FieldPanel('website'),
     ImageChooserPanel('logo'),
 ]
 
