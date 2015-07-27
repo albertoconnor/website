@@ -3,6 +3,7 @@ from __future__ import absolute_import, division, unicode_literals
 from operator import attrgetter
 
 from basic_site.models import UniquelySlugable
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.shortcuts import get_object_or_404, render
@@ -86,6 +87,24 @@ class ArticleListPage(Page):
 
     def __str__(self):
         return self.title
+
+    def get_context(self, request):
+        articles = self.subpages
+
+        # Pagination
+        page = request.GET.get('page')
+        paginator = Paginator(articles, 10)  # Show 10 blogs per page
+        try:
+            articles = paginator.page(page)
+        except PageNotAnInteger:
+            articles = paginator.page(1)
+        except EmptyPage:
+            articles = paginator.page(paginator.num_pages)
+
+        # Update template context
+        context = super(ArticleListPage, self).get_context(request)
+        context['articles'] = articles
+        return context
 
 
 @python_2_unicode_compatible
